@@ -1,6 +1,6 @@
 <!-- Name : Nitin
- Roll No.: 2501720002
- Course : BSC C.S. -->
+  Roll No.: 2501720002
+  Course : BSC C.S. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,123 +8,208 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Calendar</title>
     <style>
-        body{
+        /* GLOBAL RESET: Ensures padding doesn't increase width */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* General Page Styles */
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: rgb(137, 250, 165);
-        }
-        h1{
-            text-align: center;
-        }
-        h3{
-            text-align: center;
-        }
-        #event-dashboard{
-            display: flex;
-            justify-content: space-around;
             padding: 20px;
+            background-color: #eef2f3; 
         }
-        #main-event, #event-list{
-            background-color: rgb(129, 173, 248);
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-        }
-        #event-list{
-            width: 1000px;
-            height: 510px;
-        }
-        #main-event{
-            width: 400px;
-            height: 510px;
-        }
-        #event-card{
-            width: 150px;
-            height: 295px;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            background-color: #93ebf7;
-            flex-wrap: wrap;
-        }
-        #eventlist{
-            width: 900px;
-            height: 360px;
-            display: flex;
-            flex-direction: row;
-            overflow-y: auto;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 10px;
-            border-radius: 10px;
-            background-color: #e0f7fa;
-            position: relative;
-        }
-        h4{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        h1 {
             text-align: center;
+            color: #333;
         }
-        input, select, textarea, button{
+
+        h3 {
+            text-align: center;
+            color: #007bff; 
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        /* Main Container */
+        #event-dashboard {
+            display: flex;
+            justify-content: center; 
+            gap: 20px; 
+            flex-wrap: wrap; 
+        }
+
+        /* The Left and Right Boxes */
+        #main-event, #event-list {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
+        }
+
+        /* Sizes for the boxes - Adjusted for side-by-side */
+        #main-event {
+            width: 350px;
+            height: fit-content;
+        }
+
+        #event-list {
+            /* Changed from fixed 700px to percentage to prevent squishing */
+            width: 60%; 
+            min-width: 500px; /* Minimum width to keep cards side-by-side */
+        }
+
+        /* Form Styling */
+        label {
+            font-weight: bold;
+        }
+
+        input, select, textarea {
             width: 100%;
             padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-        input,textarea,select,label{
-            font-size: medium;
+
+        textarea {
+            height: 80px;
+            resize: none;
         }
-        button{
-            background-color: #207dee;
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: small;
-            border-radius: 10px;
-            &:hover{
-                background-color: #105bb5;
-            }
-            &:active{
-                transform: scale(0.9);
-            }
+            font-size: 16px;
         }
-        textarea{
-            resize: none;
-            height: 110px;
+
+        button:hover {
+            background-color: #0056b3; 
         }
-        #typed{
-            width: 100%;
-            height: 200px;
-            display: flex;
+
+        /* Special Buttons */
+        #clear-events {
+            background-color: #dc3545; /* Red */
+            margin-bottom: 5px;
         }
-        #type-key{
-            width: 93%;
-            height: 60px;
-            border-radius: 10px;
-            background-color: rgb(101, 152, 239);
+
+        #add-events-btn {
+            background-color: #28a745; /* Green */
+        }
+
+        /* The List of Cards Container */
+        #eventlist {
+            height: 400px;
+            overflow-y: auto; 
             padding: 10px;
-            margin-left: 40px;
+            border: 1px dashed #ccc;
+            background-color: #f9f9f9;
+            
+            /* FLEX SETTINGS FOR GRID */
+            display: flex;
+            flex-wrap: wrap; /* Allows items to wrap to next line */
+            gap: 10px;       /* Space between cards */
+            align-content: flex-start; 
         }
-        #delete-btn, #mark-btn{
-            flex-wrap: wrap;
+
+        #eventlist h4 {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Individual Event Card Style */
+        .event-card {
+            background-color: #e3f2fd; 
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            border-radius: 5px;
+            
+            /* STRICT GRID LOGIC */
+            width: 48%; /* Fallback */
+            flex: 0 0 48%; /* Don't grow, don't shrink, stay at 48% */
+            margin-bottom: 10px;
+        }
+
+        .event-card h5 {
+            margin: 0 0 5px 0;
+            font-size: 18px;
+        }
+
+        .event-card button {
+            width: auto; 
+            padding: 5px 10px;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-right: 5px;
+        }
+
+        .delete-btn {
+            background-color: #ff4d4d;
+        }
+
+        .mark-btn {
+            background-color: #28a745;
+        }
+
+        /* Key Logger Section */
+        #typed {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #type-key {
+            width: 60%;
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        /* Responsive Check: stack everything on very small screens */
+        @media (max-width: 900px) {
+            #event-dashboard {
+                flex-direction: column;
+                align-items: center;
+            }
+            #main-event, #event-list {
+                width: 90%;
+                min-width: unset;
+            }
+            /* On mobile, cards can go full width */
+            .event-card {
+                flex: 0 0 100%;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Smart Event Dashboard</h1>
+    
     <div id="event-dashboard">
+        <!-- Input Section (Left Side) -->
         <div id="main-event">
             <h3>Add New Event</h3>
             <form>
-                <label for="event-name">Event Title:</label><br>
-                <input type="text" id="event-name" name="event-name" required><br><br>
-                <label for="event-date">Event Date:</label><br>
-                <input type="date" id="event-date" name="event-date" required><br><br>
-                <label for="category">Category:</label><br>
+                <label for="event-name">Event Title:</label>
+                <input type="text" id="event-name" name="event-name" required>
+
+                <label for="event-date">Event Date:</label>
+                <input type="date" id="event-date" name="event-date" required>
+
+                <label for="category">Category:</label>
                 <select id="category" name="category" required>
                     <option value="" disabled selected>Choose Category</option>
                     <option value="Conference">Conference</option>
@@ -132,96 +217,131 @@
                     <option value="Webinar">Webinar</option>
                     <option value="Meetup">Meetup</option>
                     <option value="Social">Social</option>
-                </select><br><br>
-                <label for="description">Description:</label><br>
-                <textarea id="description" name="description"></textarea><br><br>
+                </select>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description"></textarea>
+
                 <button id="addevent" type="submit">Add Event</button>
             </form>
         </div>
+
+        <!-- List Section (Right Side) -->
         <div id="event-list">
             <h3>Upcoming Events</h3>
             <div id="eventlist">
-                <h4>No events added yet.</h4>
+                <h4 style="text-align: center; color: gray;">No events added yet.</h4>
             </div>
-            <div>
-                <button id="clear-events">Clear Events</button>
-                <button id="add-events-btn">Add Sample Events</button>
-            </div>
-            
+            <br>
+            <button id="clear-events">Clear Events</button>
+            <button id="add-events-btn">Add Sample Events</button>
         </div>
-        <script>
-            let form = document.querySelector('form');
-            let eventtitle = document.querySelector('#event-name');
-            let eventdate = document.querySelector('#event-date');
-            let category = document.querySelector('#category');
-            let description = document.querySelector('#description');
-            let eventlist = document.querySelector('#event-list');
-            let clearevents = document.querySelector('#clear-events');
-            let addeventsbtn = document.querySelector('#add-events-btn');
-            let deletebtn = document.querySelectorAll('#delete-btn');
-            function addevent(e){
-                e.preventDefault();
-                let card = document.createElement('div');
-                card.id = 'event-card';
-                card.innerHTML = `<h5>${eventtitle.value}</h5>
-                                  <span>Date: ${eventdate.value}</span><br>
-                                  <span>Category: ${category.value}</span><br>
-                                  <p>Description: ${description.value}</p>
-                                  <button id="delete-btn" onclick="deleteEvent(event)">Remove</button>
-                                  <button id='mark-btn' onclick="markCompleted(event)">Mark as Completed</button>
-                                  </div>`;
-                
-                document.querySelector('#eventlist').appendChild(card);
-                form.reset();
-                eventlist.querySelector('h4').style.display = 'none';
-            }
-            function clear(){
-                let cards = document.querySelectorAll('#event-card');
-                cards.forEach(card => card.remove());
-                eventlist.querySelector('h4').style.display = 'block';
-            }
-            function sample(){
-                let card=document.createElement('div');
-                card.id='event-card';
-                card.innerHTML = `<h5>Sample Event</h5>
-                                <span>Date: 2024-12-31</span><br>
-                                <span>Category: Conference</span><br>
-                                <p>Description: This is a sample event for demonstration purposes.</p>
-                                <button id="delete-btn" onclick="deleteEvent(event)">Remove</button>
-                                <button id='mark-btn' onclick="markCompleted(event)">Mark as Completed</button>
-                                </div>`;
-                document.querySelector('#eventlist').appendChild(card);
-                eventlist.querySelector('h4').style.display = 'none';
-            };
-            function deleteEvent(e){
-                e.target.parentElement.remove();
-                let cards = document.querySelectorAll('#event-card');
-                if(cards.length === 0){
-                    eventlist.querySelector('h4').style.display = 'block';
-                }
-            }
-            function markCompleted(e){
-                let button=e.target.parentElement.querySelector("#delete-btn");
-                e.target.parentElement.style.backgroundColor = '#a5d6a7';
-                e.target.remove();
-                button.style.height = '70px';
-            }
-            function keyPressHandler(e){
-                let typeKeyDiv = document.querySelector('#type-key');
-                typeKeyDiv.innerHTML = `<p style="font-size: 18px;">You Pressed : ${e.key}</p>`;
-            }
-            document.addEventListener('keydown',keyPressHandler);
-            form.addEventListener("submit",addevent);
-            clearevents.addEventListener("click",clear);
-            addeventsbtn.addEventListener("click",sample);
-
-
-        </script>
     </div>
+
+    <!-- Key Logger -->
     <div id="typed">
         <div id="type-key">
-            <p style="font-size: 18px;">You Pressed : </p>
+            <p style="font-size: 18px;">You Pressed: </p>
         </div>
     </div>
+
+    <script>
+        // Select elements
+        let form = document.querySelector('form');
+        let eventtitle = document.querySelector('#event-name');
+        let eventdate = document.querySelector('#event-date');
+        let category = document.querySelector('#category');
+        let description = document.querySelector('#description');
+        let eventlist = document.querySelector('#eventlist');
+        let clearevents = document.querySelector('#clear-events');
+        let addeventsbtn = document.querySelector('#add-events-btn');
+
+        // Function to add an event
+        function addevent(e) {
+            e.preventDefault();
+            
+            // Create a new div for the card
+            let card = document.createElement('div');
+            card.className = 'event-card'; 
+            
+            card.innerHTML = `
+                <h5>${eventtitle.value}</h5>
+                <strong>Date:</strong> ${eventdate.value} <br>
+                <strong>Category:</strong> ${category.value} <br>
+                <p>${description.value}</p>
+                <button class="delete-btn" onclick="deleteEvent(event)">Remove</button>
+                <button class="mark-btn" onclick="markCompleted(event)">Mark as Completed</button>
+            `;
+            
+            // Add card to the list
+            eventlist.appendChild(card);
+            
+            // Clear the form
+            form.reset();
+            
+            // Hide the "No events" text
+            let placeholder = eventlist.querySelector('h4');
+            if(placeholder) placeholder.style.display = 'none';
+        }
+
+        // Function to clear all events
+        function clear() {
+            eventlist.innerHTML = '<h4 style="text-align: center; color: gray;">No events added yet.</h4>';
+        }
+
+        // Function to add a sample event
+        function sample() {
+            let card = document.createElement('div');
+            card.className = 'event-card';
+            
+            card.innerHTML = `
+                <h5>Sample Event</h5>
+                <strong>Date:</strong> 2024-12-31 <br>
+                <strong>Category:</strong> Conference <br>
+                <p>This is a sample event.</p>
+                <button class="delete-btn" onclick="deleteEvent(event)">Remove</button>
+                <button class="mark-btn" onclick="markCompleted(event)">Mark as Completed</button>
+            `;
+            
+            eventlist.appendChild(card);
+            
+            let placeholder = eventlist.querySelector('h4');
+            if(placeholder) placeholder.style.display = 'none';
+        }
+
+        // Function to delete a specific event
+        function deleteEvent(e) {
+            let card = e.target.parentElement;
+            card.remove();
+            
+            // Check if list is empty
+            if(eventlist.children.length === 0 || (eventlist.children.length === 1 && eventlist.querySelector('h4'))) {
+                 eventlist.innerHTML = '<h4 style="text-align: center; color: gray;">No events added yet.</h4>';
+            }
+        }
+
+        // Function to mark event as completed
+        function markCompleted(e) {
+            let card = e.target.parentElement;
+            card.style.backgroundColor = '#d4edda'; // Light green
+            card.style.borderColor = '#c3e6cb';
+            card.style.opacity = '0.6';
+            e.target.innerText = "Completed";
+            e.target.disabled = true;
+        }
+
+        // Key press handler
+        function keyPressHandler(e) {
+            let typeKeyDiv = document.querySelector('#type-key');
+            typeKeyDiv.innerHTML = `<p style="font-size: 18px;">You Pressed: ${e.key}</p>`;
+        }
+
+        // Event Listeners
+        document.addEventListener('keydown', keyPressHandler);
+        form.addEventListener("submit", addevent);
+        clearevents.addEventListener("click", clear);
+        addeventsbtn.addEventListener("click", sample);
+
+    </script>
 </body>
 </html>
